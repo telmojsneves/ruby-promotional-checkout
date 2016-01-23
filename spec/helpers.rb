@@ -1,18 +1,20 @@
-require 'json'
 module Helpers
-  def json_promo_rules
-    promo_rules.to_json
+  def test_promo_rules_json
+    test_promo_rules.to_json
   end
 
-  def promo_rules
+  def test_promo_rules
     {
-      'value_rules' => {
-        '60' => '0.10'
-      },
-      'volume_rules' => {
-        '001' =>   {
-          'volume_required' => '2',
-          'discounted_price' => '8.50'
+      value_rules: [
+        {
+          value_required: 60,
+          discount: 0.1
+        }
+      ],
+      volume_rules: {
+        "001": {
+          volume_required: 2,
+          discounted_price: 8.50
         }
       }
     }

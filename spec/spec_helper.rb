@@ -1,4 +1,4 @@
-require './spec/helpers'
+require 'helpers'
 
 RSpec.configure do |config|
 
