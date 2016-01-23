@@ -7,7 +7,7 @@ describe Checkout do
       expect(subject.instance_variable_get(:@basket)).to eq({})
     end
 
-    context 'parsing the JSON string containing promo rules' do
+    context 'parsing the provided JSON string containing promo rules' do
       it 'parses promo rules from a valid JSON string' do
         actual_promo_rules = subject.instance_variable_get(:@promo_rules)
         expect(actual_promo_rules).to eq(test_promo_rules)
@@ -25,6 +25,19 @@ describe Checkout do
           invalid_json = { volume_rules: {} }.to_json
           expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
         end
+
+        it 'raises an error if value rules are not an array' do
+          invalid_json = {value_rules: {}, volume_rules: {} }.to_json
+          expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
+        end
+
+        # TODO: modify schema to validate volume rules' type
+
+        # it 'raises an error if volume rules are not a hash' do
+        #   invalid_json = {value_rules: [], volume_rules: [] }.to_json
+        #   expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
+        # end
+
       end
 
     end

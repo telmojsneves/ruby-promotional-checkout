@@ -4,7 +4,10 @@ class Checkout
 
   PROMO_RULES_SCHEMA = {
     "type": "object",
-    "required": ["value_rules", "volume_rules"]
+    "required": ["value_rules", "volume_rules"],
+    "properties": {
+      "value_rules": {"type": "array"}
+    }
   }
 
   INVALID_PROMO_RULES_MSG = "The provided promotional rules JSON string "\
