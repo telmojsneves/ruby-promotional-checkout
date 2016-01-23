@@ -14,7 +14,7 @@ describe Checkout do
       end
 
       context 'validating the provided JSON string' do
-        let(:expected_err_msg){Checkout::INVALID_PROMO_RULES_MSG}
+        let(:expected_err_msg){ Checkout::INVALID_PROMO_RULES_MSG }
 
         it 'raises an error if volume rules are not provided' do
           invalid_json = { value_rules: [] }.to_json
@@ -43,10 +43,16 @@ describe Checkout do
     end
 
     describe '#scan' do
+      let(:expected_err_msg){ Checkout::INVALID_PRODUCT_MSG }
+
       it 'adds a valid product to the basket' do
-        subject.scan('001')
+        5.times { subject.scan('001') }
         actual_basket = subject.instance_variable_get(:@basket)
-        expect(actual_basket).to eq({'001' => 1})
+        expect(actual_basket).to eq({'001' => 5})
+      end
+
+      it 'raises an error if the product code is invalid' do
+        expect { subject.scan('invalid') }.to raise_error(expected_err_msg)
       end
     end
 

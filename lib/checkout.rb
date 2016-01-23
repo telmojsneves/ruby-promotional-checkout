@@ -3,15 +3,15 @@ require 'json-schema'
 class Checkout
 
   PRODUCTS = {
-    '001': {
+    '001' => {
       name: "Lavender heart",
       price: 9.25
     },
-    '002': {
+    '002' => {
       name: "Personalised cufflinks",
       price: 45.00
     },
-    '003': {
+    '003' => {
       name: "Kids T-shirt",
       price: 19.95
     }
@@ -25,17 +25,20 @@ class Checkout
     }
   }
 
+  INVALID_PRODUCT_MSG = "The provided product code does not exist"
+
   INVALID_PROMO_RULES_MSG = "The provided promotional rules JSON string "\
                                   "is in an invalid format."
 
   def initialize(promotions_json)
     raise INVALID_PROMO_RULES_MSG unless succesfully_validated(promotions_json)
     @promo_rules = parse(promotions_json)
-    @basket = {}
+    @basket = Hash.new(0)
   end
 
   def scan(product_code)
-    @basket[product_code] = 1
+    raise INVALID_PRODUCT_MSG unless PRODUCTS[product_code]
+    @basket[product_code] += 1
   end
 
   private
