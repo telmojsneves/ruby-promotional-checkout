@@ -2,6 +2,21 @@ require 'json-schema'
 
 class Checkout
 
+  PRODUCTS = {
+    '001': {
+      name: "Lavender heart",
+      price: 9.25
+    },
+    '002': {
+      name: "Personalised cufflinks",
+      price: 45.00
+    },
+    '003': {
+      name: "Kids T-shirt",
+      price: 19.95
+    }
+  }
+
   PROMO_RULES_SCHEMA = {
     "type": "object",
     "required": ["value_rules", "volume_rules"],
@@ -17,6 +32,10 @@ class Checkout
     raise INVALID_PROMO_RULES_MSG unless succesfully_validated(promotions_json)
     @promo_rules = parse(promotions_json)
     @basket = {}
+  end
+
+  def scan(product_code)
+    @basket[product_code] = 1
   end
 
   private

@@ -42,6 +42,14 @@ describe Checkout do
 
     end
 
+    describe '#scan' do
+      it 'adds a valid product to the basket' do
+        subject.scan('001')
+        actual_basket = subject.instance_variable_get(:@basket)
+        expect(actual_basket).to eq({'001' => 1})
+      end
+    end
+
   end
 
 end
