@@ -44,9 +44,10 @@ class Checkout
   end
 
   def total
-    @basket.reduce(0) do |sum, (product_code, quantity)|
+    total = @basket.reduce(0) do |sum, (product_code, quantity)|
       sum + quantity * discounted_price_for(product_code, quantity)
-     end
+    end
+    discounted(total)
   end
 
   private
@@ -68,4 +69,16 @@ class Checkout
     end
   end
 
+  def discounted(total)
+    sort_value_rules
+    discount = 0
+    @promo_rules[:value_rules].each do |rule|
+      total >= rule[:value_required] ? discount = rule[:discount] : break
+    end
+    total * (1 - discount)
+  end
+
+  def sort_value_rules
+    @promo_rules[:value_rules].sort_by! { |rule| rule[:value_required] }
+  end
 end

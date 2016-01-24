@@ -1,4 +1,5 @@
 require 'checkout'
+
 describe Checkout do
   subject { Checkout.new(test_promo_rules_json) }
 
@@ -65,6 +66,14 @@ describe Checkout do
       volume_rules = test_promo_rules[:volume_rules]
       expected_price = volume_rules[:'001'][:discounted_price]
       expect(subject.total).to eq(2 * expected_price)
+    end
+
+    it 'includes a discount based on total basket value' do
+      2.times { subject.scan('002') }
+      expected_discount = test_promo_rules[:value_rules][0][:discount]
+      expected_price = Checkout::PRODUCTS[:'002'][:price]
+      expected_total = 2 * expected_price * (1 - expected_discount)
+      expect(subject.total).to eq(expected_total)
     end
   end
 

@@ -9,6 +9,10 @@ module Helpers
         {
           value_required: 60,
           discount: 0.1
+        },
+        {
+          value_required: 100,
+          discount: 0.2
         }
       ],
       volume_rules: {
