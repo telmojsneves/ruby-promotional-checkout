@@ -45,7 +45,7 @@ describe Checkout do
     it 'adds a valid product to the basket' do
       5.times { subject.scan('001') }
       actual_basket = subject.instance_variable_get(:@basket)
-      expect(actual_basket).to eq({'001' => 5})
+      expect(actual_basket).to eq({'001': 5})
     end
 
     it 'raises an error if the product code is invalid' do
@@ -56,8 +56,15 @@ describe Checkout do
   describe '#total' do
     it 'returns the total for non-promotional products' do
       2.times { subject.scan('003') }
-      expected_total = 2 * Checkout::PRODUCTS['003'][:price]
+      expected_total = 2 * Checkout::PRODUCTS[:'003'][:price]
       expect(subject.total).to eq(expected_total)
+    end
+
+    it 'returns the total for promotional products' do
+      2.times { subject.scan('001') }
+      volume_rules = test_promo_rules[:volume_rules]
+      expected_price = volume_rules[:'001'][:discounted_price]
+      expect(subject.total).to eq(2 * expected_price)
     end
   end
 

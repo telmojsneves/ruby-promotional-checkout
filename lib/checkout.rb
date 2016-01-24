@@ -3,15 +3,15 @@ require 'json-schema'
 class Checkout
 
   PRODUCTS = {
-    '001' => {
+    '001': {
       name: "Lavender heart",
       price: 9.25
     },
-    '002' => {
+    '002': {
       name: "Personalised cufflinks",
       price: 45.00
     },
-    '003' => {
+    '003': {
       name: "Kids T-shirt",
       price: 19.95
     }
@@ -38,12 +38,15 @@ class Checkout
   end
 
   def scan(product_code)
+    product_code = product_code.to_sym
     raise INVALID_PRODUCT_MSG unless PRODUCTS[product_code]
     @basket[product_code] += 1
   end
 
   def total
-    @basket.reduce(0) { |sum, (key, val)| sum + (PRODUCTS[key][:price] * val) }
+    @basket.reduce(0) do |sum, (product_code, quantity)|
+      sum + quantity * discounted_price_for(product_code, quantity)
+     end
   end
 
   private
@@ -54,6 +57,15 @@ class Checkout
 
   def succesfully_validated(promotions_json)
     JSON::Validator.validate(PROMO_RULES_SCHEMA, promotions_json)
+  end
+
+  def discounted_price_for(product_code, quantity)
+    product_code_rules = @promo_rules[:volume_rules][product_code]
+    if product_code_rules && product_code_rules[:volume_required] <= quantity
+      product_code_rules[:discounted_price]
+    else
+      PRODUCTS[product_code][:price]
+    end
   end
 
 end
