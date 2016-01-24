@@ -31,31 +31,34 @@ describe Checkout do
           expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
         end
 
-        # TODO: modify schema to validate volume rules' type
-
-        # it 'raises an error if volume rules are not a hash' do
-        #   invalid_json = {value_rules: [], volume_rules: [] }.to_json
-        #   expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
-        # end
-
-      end
-
-    end
-
-    describe '#scan' do
-      let(:expected_err_msg){ Checkout::INVALID_PRODUCT_MSG }
-
-      it 'adds a valid product to the basket' do
-        5.times { subject.scan('001') }
-        actual_basket = subject.instance_variable_get(:@basket)
-        expect(actual_basket).to eq({'001' => 5})
-      end
-
-      it 'raises an error if the product code is invalid' do
-        expect { subject.scan('invalid') }.to raise_error(expected_err_msg)
+        it 'raises an error if volume rules are not a hash' do
+          invalid_json = {value_rules: [], volume_rules: [] }.to_json
+          expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
+        end
       end
     end
+  end
 
+  describe '#scan' do
+    let(:expected_err_msg){ Checkout::INVALID_PRODUCT_MSG }
+
+    it 'adds a valid product to the basket' do
+      5.times { subject.scan('001') }
+      actual_basket = subject.instance_variable_get(:@basket)
+      expect(actual_basket).to eq({'001' => 5})
+    end
+
+    it 'raises an error if the product code is invalid' do
+      expect { subject.scan('invalid') }.to raise_error(expected_err_msg)
+    end
+  end
+
+  describe '#total' do
+    it 'returns the total for non-promotional products' do
+      2.times { subject.scan('003') }
+      expected_total = 2 * Checkout::PRODUCTS['003'][:price]
+      expect(subject.total).to eq(expected_total)
+    end
   end
 
 end

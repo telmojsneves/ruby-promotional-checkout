@@ -21,7 +21,8 @@ class Checkout
     "type": "object",
     "required": ["value_rules", "volume_rules"],
     "properties": {
-      "value_rules": {"type": "array"}
+      "value_rules": {"type": "array"},
+      "volume_rules": {"type": "object"}
     }
   }
 
@@ -39,6 +40,10 @@ class Checkout
   def scan(product_code)
     raise INVALID_PRODUCT_MSG unless PRODUCTS[product_code]
     @basket[product_code] += 1
+  end
+
+  def total
+    @basket.reduce(0) { |sum, (key, val)| sum + (PRODUCTS[key][:price] * val) }
   end
 
   private
