@@ -1,20 +1,20 @@
 require 'checkout'
 
 describe Checkout do
-  let(:rules_parser){ double('rules_parser', parse: test_promo_rules) }
+  let(:rules_parser){ double('rules_parser', parse_if_valid: test_promos) }
   let(:total_calculator){ double('total_calculator', total: nil) }
   let(:total_calculator_klass){ double('total_calculator_klass', new: total_calculator) }
 
-  subject { Checkout.new(test_promo_rules_json, rules_parser, total_calculator_klass) }
+  subject { Checkout.new(test_promos_json, rules_parser, total_calculator_klass) }
 
   describe '#initialize' do
     it 'initializes a new TotalCalculator object' do
-      expect(total_calculator_klass).to receive(:new).with(Checkout::PRODUCTS, test_promo_rules)
+      expect(total_calculator_klass).to receive(:new).with(Checkout::PRODUCTS, test_promos)
       subject
     end
 
     it 'parses the provided promo rules json' do
-      expect(rules_parser).to receive(:parse).with(test_promo_rules_json)
+      expect(rules_parser).to receive(:parse_if_valid).with(test_promos_json)
       subject
     end
   end

@@ -46,7 +46,7 @@ class Checkout
 
   def parse_promo_rules_from_json(promo_json, rules_parser)
     rules_parser ||= PromoRulesParser
-    rules_parser::parse(promo_json)
+    rules_parser::parse_if_valid(promo_json)
   end
 
   def initialize_total_calculator(promo_rules, total_calculator_klass)

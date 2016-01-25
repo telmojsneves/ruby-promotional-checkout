@@ -14,15 +14,18 @@ module PromoRulesParser
   INVALID_PROMO_RULES_MSG = "The provided promotional rules JSON string "\
                                   "is in an invalid format."
 
-  def self.parse(promotions_json)
-    raise INVALID_PROMO_RULES_MSG unless succesfully_validated(promotions_json)
-    JSON.parse(promotions_json, symbolize_names: true)
+  def self.parse_if_valid(promos_json)
+    is_valid?(promos_json) ? parse(promos_json) : (raise INVALID_PROMO_RULES_MSG)
   end
 
   private
 
-  def self.succesfully_validated(promotions_json)
-    JSON::Validator.validate(PROMO_RULES_SCHEMA, promotions_json)
+  def self.is_valid?(promos_json)
+    JSON::Validator.validate(PROMO_RULES_SCHEMA, promos_json)
+  end
+
+  def self.parse(promos_json)
+    JSON.parse(promos_json, symbolize_names: true)
   end
 
 end

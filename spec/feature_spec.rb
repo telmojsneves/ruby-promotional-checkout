@@ -1,7 +1,7 @@
 require 'checkout'
 
 describe 'Feature' do
-  let(:co){ Checkout.new(test_promo_rules_json) }
+  let(:co){ Checkout.new(test_promos_json) }
 
   it 'returns the correct total with a volume based discount' do
     co.scan('001')

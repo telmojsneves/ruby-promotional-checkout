@@ -1,11 +1,11 @@
 require 'json'
 
 module Helpers
-  def test_promo_rules_json
-    test_promo_rules.to_json
+  def test_promos_json
+    test_promos.to_json
   end
 
-  def test_promo_rules
+  def test_promos
     {
       value_rules: [
         {
