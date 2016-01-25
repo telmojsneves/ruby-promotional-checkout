@@ -1,42 +1,23 @@
 require 'checkout'
 
 describe Checkout do
-  subject { Checkout.new(test_promo_rules_json) }
+  let(:rules_parser){ double('rules_parser', parse: test_promo_rules) }
+  let(:total_calculator){ double('total_calculator', total: nil) }
+  let(:total_calculator_klass){ double('total_calculator_klass', new: total_calculator) }
+  subject { Checkout.new(test_promo_rules_json, rules_parser, total_calculator_klass) }
 
-  describe '#initialise' do
-    it 'initialises an empty basket' do
+  describe '#initialize' do
+    it 'initializes an empty basket' do
       expect(subject.instance_variable_get(:@basket)).to eq({})
     end
 
-    context 'parsing the provided JSON string containing promo rules' do
-      it 'parses promo rules from a valid JSON string' do
-        actual_promo_rules = subject.instance_variable_get(:@promo_rules)
-        expect(actual_promo_rules).to eq(test_promo_rules)
-      end
+    it 'initializes a new TotalCalculator object' do
+      expect(subject.instance_variable_get(:@total_calculator)).to eq(total_calculator)
+    end
 
-      context 'validating the provided JSON string' do
-        let(:expected_err_msg){ Checkout::INVALID_PROMO_RULES_MSG }
-
-        it 'raises an error if volume rules are not provided' do
-          invalid_json = { value_rules: [] }.to_json
-          expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
-        end
-
-        it 'raises an error if value rules are not provided' do
-          invalid_json = { volume_rules: {} }.to_json
-          expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
-        end
-
-        it 'raises an error if value rules are not an array' do
-          invalid_json = {value_rules: {}, volume_rules: {} }.to_json
-          expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
-        end
-
-        it 'raises an error if volume rules are not a hash' do
-          invalid_json = {value_rules: [], volume_rules: [] }.to_json
-          expect { Checkout.new(invalid_json) }.to raise_error(expected_err_msg)
-        end
-      end
+    it 'parses the provided promo rules json' do
+      expect(rules_parser).to receive(:parse).with(test_promo_rules_json)
+      subject
     end
   end
 
@@ -55,25 +36,10 @@ describe Checkout do
   end
 
   describe '#total' do
-    it 'returns the total for non-promotional products' do
-      2.times { subject.scan('003') }
-      expected_total = 2 * Checkout::PRODUCTS[:'003'][:price]
-      expect(subject.total).to eq(expected_total)
-    end
-
-    it 'returns the total for promotional products' do
-      2.times { subject.scan('001') }
-      volume_rules = test_promo_rules[:volume_rules]
-      expected_price = volume_rules[:'001'][:discounted_price]
-      expect(subject.total).to eq(2 * expected_price)
-    end
-
-    it 'includes a discount based on total basket value' do
-      2.times { subject.scan('002') }
-      expected_discount = test_promo_rules[:value_rules][0][:discount]
-      expected_price = Checkout::PRODUCTS[:'002'][:price]
-      expected_total = 2 * expected_price * (1 - expected_discount)
-      expect(subject.total).to eq(expected_total)
+    it 'retrieves the total from the TotalCalculator object' do
+      subject.scan('002')
+      expect(total_calculator).to receive(:total).with({'002': 1})
+      subject.total
     end
   end
 
