@@ -4,17 +4,6 @@ describe TotalCalculator do
 
   subject { TotalCalculator.new(test_products, test_promos) }
 
-  context '#initialize' do
-    it 'assigns the provided products to an instance variable' do
-      expect(subject.instance_variable_get(:@products)).to eq(test_products)
-    end
-
-    it 'assigns the provided promo_rules to an instance variable' do
-      expect(subject.instance_variable_get(:@promo_rules)).to eq(test_promos)
-    end
-
-  end
-
   context '#total' do
     it 'returns the total for non-promotional products' do
       basket = { '003': 2 }
