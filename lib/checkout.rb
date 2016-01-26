@@ -1,5 +1,5 @@
-require_relative 'promo_rules_parser'
-require_relative 'total_calculator'
+require_relative 'calculator'
+require_relative 'promotions'
 
 class Checkout
 
@@ -20,9 +20,9 @@ class Checkout
 
   INVALID_PRODUCT_MSG = "The provided product code does not exist."
 
-  def initialize(promo_json, rules_parser = nil, total_calculator_klass = nil)
-    promo_rules = parse_promo_rules_from_json(promo_json, rules_parser)
-    initialize_total_calculator(promo_rules, total_calculator_klass)
+  def initialize(promos_json, promos_klass = nil, calculator_klass = nil)
+    promos = initialize_promos(promos_json, promos_klass)
+    initialize_calculator(promos, calculator_klass)
     @basket = Hash.new(0)
   end
 
@@ -31,7 +31,7 @@ class Checkout
   end
 
   def total
-    @total_calculator.total(@basket)
+    @calculator.total(@basket)
   end
 
   private
@@ -44,14 +44,14 @@ class Checkout
     PRODUCTS[product_code.to_sym]
   end
 
-  def parse_promo_rules_from_json(promo_json, rules_parser)
-    rules_parser ||= PromoRulesParser
-    rules_parser::parse_if_valid(promo_json)
+  def initialize_promos(promos_json, promos_klass)
+    promos_klass ||= Promotions
+    promos_klass.new(promos_json)
   end
 
-  def initialize_total_calculator(promo_rules, total_calculator_klass)
-    total_calculator_klass ||= TotalCalculator
-    @total_calculator = total_calculator_klass.new(PRODUCTS, promo_rules)
+  def initialize_calculator(promos, calculator_klass)
+    calculator_klass ||= Calculator
+    @calculator = calculator_klass.new(PRODUCTS, promos)
   end
 
 end
