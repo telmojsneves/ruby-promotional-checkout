@@ -71,9 +71,9 @@ Based on the specifications provided, I made the following assumptions:
 
 |Class|Purpose|
 |---|---|
-|Checkout|Main class, contains the list of products, responsible for scanning products and returning the total price.|
-|TotalCalculator|Calculates the total price for a given basket of goods and promotional rules, net of volume and value discounts.|
-|Promotions|Contains the promotional rules, responsible for returning a discount rate based on basket value and discounted prices based on the quantities of promotional products in the basket.|
-|PromotionsParser|Parses the promotional rules JSON string and instantiates a Promotions object.|
-|PromotionsValidator|Validates the promotional rules JSON string against a schema for required properties and types.|
-|PriceCalculator|Calculates the price for a given product in the basket, based on the promotional rules and its quantity.|
+|[Checkout](https://github.com/thisdotrob/ruby-promotional-checkout/blob/master/lib/checkout.rb)|Main class, contains the list of products, responsible for scanning products and returning the total price.|
+|[TotalCalculator](https://github.com/thisdotrob/ruby-promotional-checkout/blob/master/lib/total_calculator.rb)|Calculates the total price for a given basket of goods and promotional rules, net of volume and value discounts.|
+|[PriceCalculator](https://github.com/thisdotrob/ruby-promotional-checkout/blob/master/lib/price_calculator.rb)|Calculates the price for a given product in the basket, based on the promotional rules and its quantity.|
+|[Promotions](https://github.com/thisdotrob/ruby-promotional-checkout/blob/master/lib/promotions.rb)|Contains the promotional rules, responsible for returning a discount rate based on basket value and discounted prices based on the quantities of promotional products in the basket.|
+|[PromotionsParser](https://github.com/thisdotrob/ruby-promotional-checkout/blob/master/lib/promotions_parser.rb)|Parses the promotional rules JSON string and instantiates a Promotions object.|
+|[PromotionsValidator](https://github.com/thisdotrob/ruby-promotional-checkout/blob/master/lib/promotions_validator.rb)|Validates the promotional rules JSON string against a schema for required properties and types.|
