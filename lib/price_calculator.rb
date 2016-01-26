@@ -1,4 +1,4 @@
-class Pricer
+class PriceCalculator
 
   def initialize(products, promotions)
     @products = products

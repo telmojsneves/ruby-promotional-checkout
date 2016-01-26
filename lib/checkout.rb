@@ -1,4 +1,4 @@
-require_relative 'calculator'
+require_relative 'total_calculator'
 require_relative 'promotions'
 
 class Checkout
@@ -8,9 +8,11 @@ class Checkout
 
   INVALID_PRODUCT_MSG = "The provided product code does not exist."
 
-  def initialize(json, promos_klass = Promotions, calculator_klass = Calculator)
+  def initialize(json, promos_klass = nil, total_calculator_klass = nil)
+    promos_klass ||= Promotions
+    total_calculator_klass ||= TotalCalculator
     promos = promos_klass.new(json)
-    @calculator = calculator_klass.new(PRODUCTS, promos)
+    @total_calculator = total_calculator_klass.new(PRODUCTS, promos)
     @basket = Hash.new(0)
   end
 
@@ -19,7 +21,7 @@ class Checkout
   end
 
   def total
-    @calculator.total(@basket)
+    @total_calculator.total(@basket)
   end
 
   private

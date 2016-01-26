@@ -1,8 +1,8 @@
-require 'pricer'
+require 'price_calculator'
 
-describe Pricer do
+describe PriceCalculator do
   let(:promotions){ double('promotions') }
-  subject{ Pricer.new(test_products, promotions) }
+  subject{ PriceCalculator.new(test_products, promotions) }
   describe '#get_price' do
     it 'retrieves a discounted price if one exists' do
       allow(promotions).to receive(:get_discounted_price).and_return(8.5)

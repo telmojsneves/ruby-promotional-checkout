@@ -1,8 +1,8 @@
-require_relative 'pricer'
+require_relative 'price_calculator'
 
-class Calculator
-  def initialize(products, promotions, pricer_klass = Pricer)
-    @pricer = pricer_klass.new(products, promotions)
+class TotalCalculator
+  def initialize(products, promotions, price_calculator_klass = PriceCalculator)
+    @price_calculator = price_calculator_klass.new(products, promotions)
     @products = products
     @promotions = promotions
   end
@@ -16,7 +16,7 @@ class Calculator
 
   def total_after_volume_discounts(basket)
     basket.reduce(0) do |sum, (product_code, quantity)|
-      sum + quantity * @pricer.get_price(product_code, quantity)
+      sum + quantity * @price_calculator.get_price(product_code, quantity)
     end
   end
 
