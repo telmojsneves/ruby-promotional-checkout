@@ -2,17 +2,20 @@ require 'promotions'
 
 describe Promotions do
   let(:promotions_parser){ double('promotions_parser') }
-  let(:promotions_parser_klass){ double('promotions_parser_klass', new: promotions_parser) }
+  let(:promotions_parser_klass){ double('promotions_parser_klass',
+                                        new: promotions_parser) }
 
   subject{ Promotions.new(test_promos_json, promotions_parser_klass) }
 
   before do
-    allow(promotions_parser).to receive(:parse_if_valid).with(test_promos_json).and_return(test_promos)
+    allow(promotions_parser).to receive(:parse_if_valid).with(test_promos_json)
+      .and_return(test_promos)
   end
 
   describe '#initialize' do
     it 'parses the provided promotional rules JSON' do
-      expect(promotions_parser).to receive(:parse_if_valid).with(test_promos_json)
+      expect(promotions_parser).to receive(:parse_if_valid)
+        .with(test_promos_json)
       subject
     end
   end

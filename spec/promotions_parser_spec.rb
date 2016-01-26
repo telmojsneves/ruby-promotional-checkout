@@ -2,7 +2,8 @@ require 'promotions_parser'
 
 describe PromotionsParser do
   let(:promotions_validator){ double('promotions_validator', validate: true) }
-  let(:promotions_validator_klass){ double('promotions_validator_klass', new: promotions_validator) }
+  let(:promotions_validator_klass){ double('promotions_validator_klass',
+                                           new: promotions_validator) }
 
   subject { PromotionsParser.new(promotions_validator_klass) }
 

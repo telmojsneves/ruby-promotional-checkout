@@ -8,9 +8,8 @@ class Checkout
 
   INVALID_PRODUCT_MSG = "The provided product code does not exist."
 
-  def initialize(json, promos_klass = nil, total_calculator_klass = nil)
-    promos_klass ||= Promotions
-    total_calculator_klass ||= TotalCalculator
+  def initialize(json, promos_klass = Promotions,
+                 total_calculator_klass = TotalCalculator)
     promos = promos_klass.new(json)
     @total_calculator = total_calculator_klass.new(PRODUCTS, promos)
     @basket = Hash.new(0)

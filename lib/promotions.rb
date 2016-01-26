@@ -15,7 +15,7 @@ class Promotions
   end
 
   def get_discounted_price(product_code, quantity)
-    if promo_exists?(product_code) && sufficient_quantity(product_code, quantity)
+    if promo_exists?(product_code) && has_min_quantity(product_code, quantity)
       discounted_price(product_code)
     end
   end
@@ -32,7 +32,7 @@ class Promotions
     @volume_rules[product_code]
   end
 
-  def sufficient_quantity(product_code, quantity)
+  def has_min_quantity(product_code, quantity)
     @volume_rules[product_code][:volume_required] <= quantity
   end
 

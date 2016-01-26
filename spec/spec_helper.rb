@@ -1,7 +1,6 @@
 require 'helpers'
 
 RSpec.configure do |config|
-
   config.include Helpers
 
   config.expect_with :rspec do |expectations|

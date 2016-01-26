@@ -4,13 +4,16 @@ describe Checkout do
   let(:promos){ double('promos') }
   let(:promos_klass){ double('promos_klass', new: promos) }
   let(:total_calculator){ double('total_calculator', total: nil) }
-  let(:total_calculator_klass){ double('total_calculator_klass', new: total_calculator) }
+  let(:total_calculator_klass){ double('total_calculator_klass',
+                                       new: total_calculator) }
 
-  subject { Checkout.new(test_promos_json, promos_klass, total_calculator_klass) }
+  subject { Checkout.new(test_promos_json, promos_klass,
+                         total_calculator_klass) }
 
   describe '#initialize' do
     it 'initializes a new Calculator object, with products and promos data' do
-      expect(total_calculator_klass).to receive(:new).with(Checkout::PRODUCTS, promos)
+      expect(total_calculator_klass)
+        .to receive(:new).with(Checkout::PRODUCTS, promos)
       subject
     end
 
