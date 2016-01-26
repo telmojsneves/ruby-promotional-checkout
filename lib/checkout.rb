@@ -4,18 +4,12 @@ require_relative 'promotions'
 class Checkout
 
   PRODUCTS = {
-    '001': {
-      name: "Lavender heart",
-      price: 9.25
-    },
-    '002': {
-      name: "Personalised cufflinks",
-      price: 45.00
-    },
-    '003': {
-      name: "Kids T-shirt",
-      price: 19.95
-    }
+    '001': { name: "Lavender heart",
+             price: 9.25 },
+    '002': { name: "Personalised cufflinks",
+             price: 45.00 },
+    '003': { name: "Kids T-shirt",
+             price: 19.95 }
   }
 
   INVALID_PRODUCT_MSG = "The provided product code does not exist."

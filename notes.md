@@ -1,4 +1,11 @@
 # Notes
+## Class extraction
+Calculator -> Price
+  Would need: product_code, quantity, promotions, products
+
+Promotions -> PromotionsParser
+  PromotionsParser should also do the validation via PromotionsValidator
+
 ## Objects
 ### Checkout
 #### Instance variables
