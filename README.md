@@ -1,4 +1,11 @@
-# Ruby Promotional Checkout
+# Ruby Promotional Checkout   
+[![Build Status](https://travis-ci.org/thisdotrob/ruby-promotional-checkout.svg?branch=master)](https://travis-ci.org/thisdotrob/ruby-promotional-checkout) [![Coverage Status](https://coveralls.io/repos/github/thisdotrob/ruby-promotional-checkout/badge.svg?branch=master)](https://coveralls.io/github/thisdotrob/ruby-promotional-checkout?branch=master)
+
+* [About](#about)
+* [Setup](#setup)
+* [Usage](#usage)
+* [Approach](#approach)
+* [Classes](#classes)
 
 ## About
 A checkout system in Ruby allowing a user to set promotional rules, scan items and calculate a total amount payable.
@@ -6,7 +13,7 @@ A checkout system in Ruby allowing a user to set promotional rules, scan items a
 
 ## Setup
 1. Install [Ruby](https://www.ruby-lang.org/en/downloads/), [Bundler](http://bundler.io/) and [Git](https://git-scm.com/) if they are not installed already
-2. Clone this repo: ```git clone ...```
+2. Clone this repo: ```git clone git@github.com:thisdotrob/ruby-promotional-checkout.git```
 3. Run ```bundle install```
 4. Run the tests to make sure everything is okay: ```rspec```
 
