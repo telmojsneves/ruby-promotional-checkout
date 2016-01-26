@@ -1,20 +1,18 @@
 require 'promotions'
 
 describe Promotions do
-  let(:promotions_validator){ double('promotions_validator', validate: true) }
-  let(:promotions_validator_klass){ double('promotions_validator_klass', new: promotions_validator) }
+  let(:promotions_parser){ double('promotions_parser') }
+  let(:promotions_parser_klass){ double('promotions_parser_klass', new: promotions_parser) }
 
-  subject{ Promotions.new(test_promos_json, promotions_validator_klass) }
+  subject{ Promotions.new(test_promos_json, promotions_parser_klass) }
+
+  before do
+    allow(promotions_parser).to receive(:parse_if_valid).with(test_promos_json).and_return(test_promos)
+  end
 
   describe '#initialize' do
-    it 'delegates validation of the provided promo rules JSON' do
-      expect(promotions_validator).to receive(:validate).with(test_promos_json)
-      subject
-    end
-
-    it 'parses the provided promo rules JSON if valid' do
-      allow(JSON).to receive(:parse).and_return(test_promos)
-      expect(JSON).to receive(:parse).with(test_promos_json, symbolize_names: true)
+    it 'parses the provided promotional rules JSON' do
+      expect(promotions_parser).to receive(:parse_if_valid).with(test_promos_json)
       subject
     end
   end

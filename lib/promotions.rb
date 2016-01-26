@@ -1,11 +1,9 @@
-require_relative 'promotions_validator'
+require_relative 'promotions_parser'
 
 class Promotions
-
-  def initialize(promos_json, promotions_validator_klass = PromotionsValidator)
-    promotions_validator = promotions_validator_klass.new
-    parse_promos_from_json_if_valid(promos_json, promotions_validator)
-    sort_value_rules
+  def initialize(promos_json, promotions_parser_klass = PromotionsParser)
+    promotions_parser = promotions_parser_klass.new
+    parse_promos_if_valid(promos_json, promotions_parser)
   end
 
   def get_discount_rate(basket_value)
@@ -24,6 +22,12 @@ class Promotions
 
   private
 
+  def parse_promos_if_valid(promos_json, promotions_parser)
+    promos_hash = promotions_parser.parse_if_valid(promos_json)
+    @value_rules = promos_hash[:value_rules]
+    @volume_rules = promos_hash[:volume_rules]
+  end
+
   def promo_exists?(product_code)
     @volume_rules[product_code]
   end
@@ -34,25 +38,6 @@ class Promotions
 
   def discounted_price(product_code)
     @volume_rules[product_code][:discounted_price]
-  end
-
-  def parse_promos_from_json_if_valid(json, promotions_validator)
-    promotions_validator.validate(json)
-    parse(json)
-  end
-
-  def parse(promos_json)
-    promos_hash = JSON.parse(promos_json, symbolize_names: true)
-    extract_rules(promos_hash)
-  end
-
-  def extract_rules(promos_hash)
-    @value_rules = promos_hash[:value_rules]
-    @volume_rules = promos_hash[:volume_rules]
-  end
-
-  def sort_value_rules
-    @value_rules.sort_by! { |rule| rule[:value_required] }
   end
 
 end
