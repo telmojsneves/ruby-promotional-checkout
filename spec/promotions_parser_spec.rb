@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'promotions_parser'
 
 describe PromotionsParser do

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class PriceCalculator
 
   def initialize(products, promotions)
@@ -16,7 +17,7 @@ class PriceCalculator
   end
 
   def default_price(product_code)
-    @products[product_code][:price]
+    @products.dig(product_code, :price)
   end
 
 end

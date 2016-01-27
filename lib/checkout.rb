@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require_relative 'total_calculator'
 require_relative 'promotions'
 
